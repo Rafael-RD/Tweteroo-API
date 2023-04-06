@@ -16,7 +16,6 @@ app.get('/sign-up', (req, res)=>{
 })
 
 app.post('/sign-up', (req, res)=>{
-    console.log(req.body);
     const {username, avatar}=req.body;
     if((!username || typeof(username)!=='string') || (!avatar || typeof(avatar)!=='string')) return res.status(400).send('Todos os campos são obrigatórios!');
     else {
@@ -35,7 +34,13 @@ app.post('/tweets', (req,res)=>{
 
 app.get('/tweets', (req, res)=>{
     const last10=[];
-    for(let i=0; i<10 && i<tweets.length; i++){
+    const {page}=req.query;
+    
+    if(!page===undefined && Number(page)<1) return res.status(400).send("Informe uma página válida!");
+    let i=0;
+    if(page>=2) i=(page*10)-10
+
+    for(i; i<10 && i<tweets.length; i++){
         const {username, tweet}=tweets[tweets.length-1-i];
         const {avatar}=users.find(e=>e.username===username)
         last10.push({username, tweet, avatar});
