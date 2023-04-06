@@ -29,7 +29,7 @@ app.post('/tweets', (req,res)=>{
     const {username, tweet}=req.body;
     if((!username || typeof(username)!=='string') || (!tweet || typeof(tweet)!=='string')) return res.status(400).send('Todos os campos são obrigatórios!');
     if(users.length===0 || !users.some((e)=>e.username===username)) return res.status(401).send('UNAUTHORIZED');
-    tweets.push({id: tweets.length, username, tweet});
+    tweets.push({username, tweet});
     return res.status(201).send('OK')
 })
 
@@ -43,5 +43,15 @@ app.get('/tweets', (req, res)=>{
     res.send(last10);
 });
 
+app.get('/tweets/:user',(req, res)=>{
+    const {user}=req.params;
+    if(!users.some(e=>e.username===user)) return res.send([]);
+    const userTweets=tweets.filter((e)=>e.username===user);
+    const {avatar}=users.find(e=>e.username===user);
+    for(let i=0; i<userTweets.length; i++){
+        userTweets[i].avatar=avatar;
+    }
+    res.send(userTweets);
+})
 
 app.listen(PORT, ()=>console.log(`Server Running on ${PORT}`));
