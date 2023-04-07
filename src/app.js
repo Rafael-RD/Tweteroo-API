@@ -7,9 +7,12 @@ app.use(cors());
 app.use(json());
 
 
-const users=[];
+const users=[{username: "rafa", avatar: 'url'}];
 const tweets=[];
 
+for(let i=0; i<95; i++){
+    tweets.push({username: 'rafa', tweet: `${i}`});
+}
 
 app.get('/sign-up', (req, res)=>{
     res.send(users);
@@ -25,22 +28,23 @@ app.post('/sign-up', (req, res)=>{
 })
 
 app.post('/tweets', (req,res)=>{
-    const {username, tweet}=req.body;
-    if((!username || typeof(username)!=='string') || (!tweet || typeof(tweet)!=='string')) return res.status(400).send('Todos os campos são obrigatórios!');
-    if(users.length===0 || !users.some((e)=>e.username===username)) return res.status(401).send('UNAUTHORIZED');
-    tweets.push({username, tweet});
+    const {tweet}=req.body;
+    const {user}=req.headers;
+    console.log(req.headers);
+    if((!user || typeof(user)!=='string') || (!tweet || typeof(tweet)!=='string')) return res.status(400).send('Todos os campos são obrigatórios!');
+    if(users.length===0 || !users.some((e)=>e.username===user)) return res.status(401).send('UNAUTHORIZED');
+    tweets.push({username:user, tweet});
     return res.status(201).send('OK')
 })
 
 app.get('/tweets', (req, res)=>{
     const last10=[];
     const {page}=req.query;
-    
     if(!page===undefined && Number(page)<1) return res.status(400).send("Informe uma página válida!");
     let i=0;
     if(page>=2) i=(page*10)-10
 
-    for(i; i<10 && i<tweets.length; i++){
+    for(let j=0; j<10 && i<tweets.length; i++, j++){
         const {username, tweet}=tweets[tweets.length-1-i];
         const {avatar}=users.find(e=>e.username===username)
         last10.push({username, tweet, avatar});
