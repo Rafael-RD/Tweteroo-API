@@ -22,7 +22,6 @@ app.post('/sign-up', (req, res)=>{
 app.post('/tweets', (req,res)=>{
     const {tweet}=req.body;
     const {user}=req.headers;
-    console.log(req.headers);
     if((!user || typeof(user)!=='string') || (!tweet || typeof(tweet)!=='string')) return res.status(400).send('Todos os campos são obrigatórios!');
     if(users.length===0 || !users.some((e)=>e.username===user)) return res.status(401).send('UNAUTHORIZED');
     tweets.push({username:user, tweet});
