@@ -7,16 +7,8 @@ app.use(cors());
 app.use(json());
 
 
-const users=[{username: "rafa", avatar: 'url'}];
+const users=[];
 const tweets=[];
-
-for(let i=0; i<95; i++){
-    tweets.push({username: 'rafa', tweet: `${i}`});
-}
-
-app.get('/sign-up', (req, res)=>{
-    res.send(users);
-})
 
 app.post('/sign-up', (req, res)=>{
     const {username, avatar}=req.body;
