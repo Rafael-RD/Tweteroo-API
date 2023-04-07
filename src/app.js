@@ -32,7 +32,7 @@ app.post('/tweets', (req,res)=>{
 app.get('/tweets', (req, res)=>{
     const last10=[];
     const {page}=req.query;
-    if(!page===undefined && Number(page)<1) return res.status(400).send("Informe uma página válida!");
+    if(page!==undefined && (isNaN(Number(page)) || Number(page)<1)) return res.status(400).send("Informe uma página válida!");
     let i=0;
     if(page>=2) i=(page*10)-10
 
