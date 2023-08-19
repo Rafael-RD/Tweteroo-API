@@ -1,7 +1,9 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { TweetRepository, UserRepository } from './app.repository';
 import { Tweet } from './entities/tweet.entity';
-import { CreateUserDto } from './DTOs/user.dto';
+import { CreateUserDTO } from './DTOs/user.dto';
+import { CreateTweetDTO } from './DTOs/tweet.dto';
+import { User } from './entities/user.entity';
 
 @Injectable()
 export class AppService {
@@ -14,10 +16,11 @@ export class AppService {
     return 'Server is online!';
   }
 
-  signUp(user: CreateUserDto) {
-    const userExistsCheck = this.userRepository.getUserByUsername(user.username);
+  signUp(userDTO: CreateUserDTO) {
+    const userExistsCheck = this.userRepository.getUserByUsername(userDTO.username);
     if (!userExistsCheck) {
-      this.userRepository.createUser(user);
+      const newUser = new User(userDTO.username, userDTO.avatar);
+      this.userRepository.createUser(newUser);
     }
   }
 
