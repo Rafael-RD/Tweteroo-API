@@ -1,4 +1,4 @@
-class User {
+export class User {
   username: string;
   avatar: string;
 

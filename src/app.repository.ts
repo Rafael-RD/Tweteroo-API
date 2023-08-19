@@ -1,5 +1,10 @@
-class UserRepository {
-  users: User[];
+import { Injectable } from "@nestjs/common";
+import { User } from "./entities/user.entity";
+import { Tweet } from "./entities/tweet.entity";
+
+@Injectable()
+export class UserRepository {
+  private users: User[];
 
   constructor() {
     this.users = [];
@@ -19,8 +24,9 @@ class UserRepository {
   }
 }
 
-class TweetRepository {
-  tweets: Tweet[];
+@Injectable()
+export class TweetRepository {
+  private tweets: Tweet[];
 
   constructor() {
     this.tweets = [];

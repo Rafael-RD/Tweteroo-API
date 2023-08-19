@@ -1,4 +1,6 @@
-class Tweet {
+import { User } from "./user.entity";
+
+export class Tweet {
   user: User;
   tweet: string;
 
