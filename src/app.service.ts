@@ -24,6 +24,15 @@ export class AppService {
     }
   }
 
+  postTweet(tweetDTO: CreateTweetDTO) {
+    const user = this.userRepository.getUserByUsername(tweetDTO.username);
+    if (!user) {
+      throw new HttpException('User does not exist!', HttpStatus.UNAUTHORIZED);
+    }
+    const tweet = new Tweet(user, tweetDTO.tweet);
+    this.tweetRepository.postTweet(tweet);
+  }
+
   getAllTweets(): Tweet[] {
     return this.tweetRepository.getAllTweets();
   }
