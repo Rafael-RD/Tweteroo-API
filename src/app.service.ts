@@ -13,7 +13,7 @@ export class AppService {
   ) { }
 
   getHealth(): string {
-    return 'Server is online!';
+    return "I'm okay!";
   }
 
   signUp(userDTO: CreateUserDTO) {
@@ -33,7 +33,16 @@ export class AppService {
     this.tweetRepository.postTweet(tweet);
   }
 
-  getAllTweets(): Tweet[] {
-    return this.tweetRepository.getAllTweets();
+  getTweets(page: string = '1') {
+    const pageAsNumber = parseInt(page);
+    if (isNaN(pageAsNumber) || pageAsNumber < 1) throw new HttpException('Page must be a number!', HttpStatus.BAD_REQUEST);
+
+    return this.tweetRepository.getAllTweets().slice(15 * (pageAsNumber - 1), 15 * pageAsNumber).map(t => {
+      return {
+        username: t.user.username,
+        avatar: t.user.avatar,
+        tweet: t.tweet
+      }
+    });
   }
 }
