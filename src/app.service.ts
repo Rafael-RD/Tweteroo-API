@@ -45,4 +45,17 @@ export class AppService {
       }
     });
   }
+
+  getTweetsByUsername(username: string) {
+    const user = this.userRepository.getUserByUsername(username);
+    if (!user) return [];
+
+    return this.tweetRepository.getTweetsByUsername(user).map(t => {
+      return {
+        username: t.user.username,
+        avatar: t.user.avatar,
+        tweet: t.tweet
+      }
+    });
+  }
 }
