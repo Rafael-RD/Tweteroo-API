@@ -18,7 +18,7 @@ export class UserRepository {
     return this.users.find(user => user.username === userName);
   }
 
-  postUser(user: User): User {
+  createUser(user: User): User {
     this.users.push(user);
     return user;
   }

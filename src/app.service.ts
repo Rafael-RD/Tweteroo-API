@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { TweetRepository, UserRepository } from './app.repository';
 import { Tweet } from './entities/tweet.entity';
+import { CreateUserDto } from './DTOs/user.dto';
 
 @Injectable()
 export class AppService {
@@ -11,6 +12,13 @@ export class AppService {
 
   getHealth(): string {
     return 'Server is online!';
+  }
+
+  signUp(user: CreateUserDto) {
+    const userExistsCheck = this.userRepository.getUserByUsername(user.username);
+    if (!userExistsCheck) {
+      this.userRepository.createUser(user);
+    }
   }
 
   getAllTweets(): Tweet[] {
